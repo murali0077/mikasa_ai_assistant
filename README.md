@@ -14,8 +14,7 @@
 
 ## 📸 Workflow Preview
 
-> ⚠️ Add your n8n canvas screenshot here after importing.
-> (`assets/workflow-screenshot.png`)
+![Workflow Screenshot](assets/workflow-screenshot.png)
 
 ---
 
