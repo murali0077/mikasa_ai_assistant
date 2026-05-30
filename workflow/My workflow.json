@@ -1,0 +1,401 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is MIkasa. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -624,
+        0
+      ],
+      "id": "10d63bc7-0c93-48c9-9b55-656d3deb2113",
+      "name": "When chat message received",
+      "webhookId": "bddc5898-23f3-4d51-b318-32971d9f651a"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=##Role\n\nYou are a helpful assistant and your name Mikasa\nyour task is to do whatever I'm ask\nyour talking Murali Krishna\nyou current data and time is {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -304,
+        0
+      ],
+      "id": "95fc1329-4b6e-4580-a879-6bdb2d97fa36",
+      "name": "AI Assistant"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        256
+      ],
+      "id": "d5883493-4d61-42fb-a999-1c5b72f34550",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "JmXJMgnIHtygKoUB",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 7
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -304,
+        256
+      ],
+      "id": "60696aa1-096a-4784-b065-ec228dfc74a3",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "kOvlMfijXSpBBjD8",
+          "mode": "list",
+          "cachedResultName": "memory",
+          "cachedResultUrl": "/projects/5bvN0OpJ7n6M1rO5/datatables/kOvlMfijXSpBBjD8"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "orderBy": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Order_By', ``, 'boolean') }}"
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        112,
+        256
+      ],
+      "id": "980d3041-6aa9-4822-adb1-1f5b100dcd9a",
+      "name": "Get Memories"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "kOvlMfijXSpBBjD8",
+          "mode": "list",
+          "cachedResultName": "memory",
+          "cachedResultUrl": "/projects/5bvN0OpJ7n6M1rO5/datatables/kOvlMfijXSpBBjD8"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "memory_key": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('memory_key', ``, 'string') }}",
+            "memory_value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('memory_value', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "memory_key",
+              "displayName": "memory_key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "memory_value",
+              "displayName": "memory_value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        256
+      ],
+      "id": "9861b400-33fd-4d66-93ee-a9251ba75c29",
+      "name": "Insert Memory"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "kOvlMfijXSpBBjD8",
+          "mode": "list",
+          "cachedResultName": "memory",
+          "cachedResultUrl": "/projects/5bvN0OpJ7n6M1rO5/datatables/kOvlMfijXSpBBjD8"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "memory_key",
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions0_Value', `id as a number`, 'string') }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "memory_key": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('memory_key', ``, 'string') }}",
+            "memory_value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('memory_value', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "memory_key",
+              "displayName": "memory_key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "memory_value",
+              "displayName": "memory_value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        256
+      ],
+      "id": "01d28e77-6620-4092-908c-c56dd01ea7ef",
+      "name": "update_memory"
+    },
+    {
+      "parameters": {
+        "content": "## Memory",
+        "height": 176,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        192
+      ],
+      "typeVersion": 1,
+      "id": "f9b5cf83-198a-41e7-a330-5c2e465f92b2",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+      "typeVersion": 1,
+      "position": [
+        416,
+        256
+      ],
+      "id": "93365b9d-e3d4-4a3a-b20d-b3e6f341a314",
+      "name": "Wikipedia"
+    },
+    {
+      "parameters": {
+        "articleId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Article_ID', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hackerNewsTool",
+      "typeVersion": 1,
+      "position": [
+        688,
+        256
+      ],
+      "id": "5e88ec54-2975-4b99-9437-e4bbf511cfd2",
+      "name": "Get an article in Hacker News"
+    },
+    {
+      "parameters": {
+        "content": "## Reaserch",
+        "height": 224,
+        "width": 432,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        192
+      ],
+      "typeVersion": 1,
+      "id": "883d0d49-ee3b-4871-b9a7-920db4d6ec7e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "q": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Query__q_', ``, 'string') }}",
+        "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location__location_', ``, 'string') }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-serpapi.serpApiTool",
+      "typeVersion": 1,
+      "position": [
+        544,
+        256
+      ],
+      "id": "0868bf53-ae6c-4f6f-ac77-3aaa73a8cf94",
+      "name": "Google Search",
+      "credentials": {
+        "serpApi": {
+          "id": "wf8GH3ztFIW3QOoI",
+          "name": "SerpApi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Assistant": {
+      "main": [
+        []
+      ]
+    },
+    "Get Memories": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Memory": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update_memory": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an article in Hacker News": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9170fd36-8ecd-4aa9-ab60-e2c0667c8e16",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d750d8d863134cb107a503a012d071f44b19d7f41e7467c9b99b0589605d17c9"
+  },
+  "id": "M8BHxkiHQbnDQC1S",
+  "tags": []
+}
